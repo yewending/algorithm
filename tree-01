@@ -1,0 +1,85 @@
+#include "stdafx.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <queue>
+
+
+typedef struct node {
+  int val;
+  struct node *left;
+  struct node *right;
+} Node;
+
+
+Node* InitNode(int val) {
+  Node* new_node = (Node*)malloc(sizeof(Node));
+  new_node->left = nullptr;
+  new_node->right = nullptr;
+  new_node->val = val;
+
+  return new_node;
+}
+
+// 插入一个左节点
+void InsertLeftChild(Node **tree, Node* left) {
+  (*tree)->left = left;
+}
+// 插入一个右节点
+void InsertRightChild(Node **tree, Node* right) {
+  (*tree)->right = right;
+}
+
+void PrintTree(Node* tree) {
+  if (tree != nullptr) {
+    printf("%d\n", tree->val);
+    PrintTree(tree->right);
+    PrintTree(tree->left);
+  }
+}
+
+Node* CreateTree() {
+  Node* tree;
+  tree = InitNode(0);
+  Node* right = InitNode(-1);
+  Node* left = InitNode(1);
+  InsertLeftChild(&tree, left);
+  InsertRightChild(&tree, right);
+  Node* r_right = InitNode(-2);
+  Node* r_left = InitNode(2);
+  // 第一层的右节点插入左右节点
+  InsertLeftChild(&right, r_right);
+  InsertRightChild(&right, r_left);
+  return tree;
+}
+
+void PreOrderTraverse(Node *tree) {
+  if (tree != nullptr) {
+    printf("%d ", tree->val);
+    PreOrderTraverse(tree->left);
+    PreOrderTraverse(tree->right);
+  }
+}
+
+void InOrderTraverse(Node *tree) {
+  if (tree != nullptr) {
+    InOrderTraverse(tree->left);
+    printf("%d ", tree->val);
+    InOrderTraverse(tree->right);
+  }
+}
+
+void PostOrderTraverse(Node *tree) {
+  if (tree != nullptr) {
+    PostOrderTraverse(tree->right);
+    PostOrderTraverse(tree->left);
+    printf("%d ", tree->val);
+  }
+}
+
+int main() {
+  Node* n = CreateTree();
+  PostOrderTraverse(n);
+ // PrintTree(n);
+  return 0;
+}
